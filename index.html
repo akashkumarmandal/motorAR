@@ -1,6 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>AR Motor Monitor</title>
+
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.loaders.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+}
+</style>
+
+</head>
+
+<body>
+
+<a-scene
+embedded
+vr-mode-ui="enabled:false"
+renderer="logarithmicDepthBuffer:true;"
+arjs="sourceType:webcam;
+      debugUIEnabled:false;
+      detectionMode:mono_and_matrix;
+      matrixCodeType:3x3;">
+
+<a-assets>
+
+<a-asset-item
+id="animated-asset"
+src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CesiumMan/glTF-Binary/CesiumMan.glb">
+</a-asset-item>
+
+</a-assets>
+
+<!-- ===================== MARKER 6 ===================== -->
+
+<a-marker id="marker6"
+type="barcode"
+value="6">
+
+<a-entity
+gltf-model="#animated-asset"
+position="0 0 0"
+rotation="0 0 0"
+scale="2 2 2"
+animation-mixer>
+</a-entity>
+
+<!-- Information Panel -->
+
+<a-plane
+position="0 2.0 0"
+width="2.8"
+height="1.8"
+color="black"
+opacity="0.55">
+</a-plane>
+
+<a-text
+id="statusText"
+value="Status : STOP"
+position="-1.2 2.6 0.01"
+color="lime"
+align="left"
+scale="0.8 0.8 0.8">
+</a-text>
+
+<a-text
+id="rText"
+value="R : 0"
+position="-1.2 2.3 0.01"
+color="red"
+align="left"
+scale="0.8 0.8 0.8">
+</a-text>
+
+<a-text
+id="yText"
+value="Y : 0"
+position="-1.2 2.0 0.01"
+color="yellow"
+align="left"
+scale="0.8 0.8 0.8">
+</a-text>
+
+<a-text
+id="bText"
+value="B : 0"
+position="-1.2 1.7 0.01"
+color="cyan"
+align="left"
+scale="0.8 0.8 0.8">
+</a-text>
+
+</a-marker>
+
+<!-- ===================== MARKER 7 ===================== -->
+
+<a-marker
+id="marker7"
+type="barcode"
+value="7">
+
+<a-box
+position="0 0.5 0"
+color="yellow">
+</a-box>
+
+<a-text
+value="Mukesh Sir"
+position="-1 1.3 0"
+align="center"
+color="red"
+rotation="-90 0 0">
+</a-text>
+
+</a-marker>
+
+<a-entity camera></a-entity>
+
+</a-scene>
+
+<script>
+
+function sendToAppInventor(message){
+
+    if(window.AppInventor &&
+       typeof window.AppInventor.setWebViewString==="function"){
+
+        window.AppInventor.setWebViewString(message);
+    }
+
+    console.log(message);
+}
+
+/* ---------- Update Panel ---------- */
+
+function updateMotorData(r,y,b,status){
+
+    document.querySelector("#statusText")
+    .setAttribute("value","Status : "+status);
+
+    document.querySelector("#rText")
+    .setAttribute("value","R : "+r+" V");
+
+    document.querySelector("#yText")
+    .setAttribute("value","Y : "+y+" V");
+
+    document.querySelector("#bText")
+    .setAttribute("value","B : "+b+" V");
+
+}
+
+/* Example values */
+
+updateMotorData(415,414,416,"RUNNING");
+
+/* Allow App Inventor to update */
+
+window.updateFromApp=function(data){
+
+    let p=data.split(",");
+
+    updateMotorData(
+        p[0],
+        p[1],
+        p[2],
+        p[3]
+    );
+
+}
+
+/* Marker Events */
+
+window.addEventListener("load",function(){
+
+const marker6=document.querySelector("#marker6");
+const marker7=document.querySelector("#marker7");
+
+marker6.addEventListener("markerFound",function(){
+sendToAppInventor("Marker 6 Found");
+});
+
+marker6.addEventListener("markerLost",function(){
+sendToAppInventor("Marker 6 Lost");
+});
+
+marker7.addEventListener("markerFound",function(){
+sendToAppInventor("Marker 7 Found");
+});
+
+marker7.addEventListener("markerLost",function(){
+sendToAppInventor("Marker 7 Lost");
+});
+
+});
+
+</script>
+
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -119,4 +330,4 @@ window.addEventListener("load", function(){
 </script>
 
 </body>
-</html>
+</html> -->
