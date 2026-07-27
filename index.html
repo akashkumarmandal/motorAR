@@ -11,21 +11,18 @@ content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>AR Motor Monitor</title>
 
 
-<!-- A-Frame -->
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
-<!-- AR.js -->
 <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
 
-<!-- Animation Support -->
 <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.loaders.min.js"></script>
 
 
 <style>
 
 body{
-    margin:0;
-    overflow:hidden;
+margin:0;
+overflow:hidden;
 }
 
 </style>
@@ -67,7 +64,8 @@ src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Mode
 
 
 
-<!-- ================= MARKER 6 MOTOR ================= -->
+
+<!-- ================= MARKER 6 ================= -->
 
 
 <a-marker
@@ -79,47 +77,50 @@ type="barcode"
 value="6">
 
 
-<!-- 3D Motor Model -->
+
+<!-- 3D MOTOR MODEL (NO ANIMATION) -->
 
 
 <a-entity
 
 gltf-model="#motorModel"
 
-position="0 0.1 0"
+position="0 0 0"
 
-rotation="0 180 0"
+rotation="0 0 0"
 
-scale="1.5 1.5 1.5"
-
-animation-mixer>
+scale="1.5 1.5 1.5">
 
 </a-entity>
 
 
 
-<!-- Information Background -->
+
+<!-- BLACK INFORMATION PANEL -->
 
 
 <a-plane
 
-position="0 2.2 0"
+position="0 1.8 0"
 
 rotation="-90 0 0"
 
 width="3"
 
-height="1.8"
+height="1.5"
 
 color="black"
 
-opacity="0.65">
+opacity="0.75">
 
 </a-plane>
 
 
 
-<!-- Status -->
+
+
+<!-- STATUS TEXT -->
+
 
 <a-text
 
@@ -127,19 +128,23 @@ id="statusText"
 
 value="Status : STOP"
 
-position="-1.2 2.8 0.02"
+position="-1.2 2.35 0.08"
 
 rotation="-90 0 0"
 
 color="lime"
 
-scale="0.8 0.8 0.8">
+align="left"
+
+scale="0.7 0.7 0.7">
 
 </a-text>
 
 
 
-<!-- R Phase -->
+
+
+<!-- R PHASE -->
 
 
 <a-text
@@ -148,19 +153,23 @@ id="rText"
 
 value="R : 0 V"
 
-position="-1.2 2.45 0.02"
+position="-1.2 2.05 0.08"
 
 rotation="-90 0 0"
 
 color="red"
 
-scale="0.8 0.8 0.8">
+align="left"
+
+scale="0.7 0.7 0.7">
 
 </a-text>
 
 
 
-<!-- Y Phase -->
+
+
+<!-- Y PHASE -->
 
 
 <a-text
@@ -169,19 +178,23 @@ id="yText"
 
 value="Y : 0 V"
 
-position="-1.2 2.1 0.02"
+position="-1.2 1.75 0.08"
 
 rotation="-90 0 0"
 
 color="yellow"
 
-scale="0.8 0.8 0.8">
+align="left"
+
+scale="0.7 0.7 0.7">
 
 </a-text>
 
 
 
-<!-- B Phase -->
+
+
+<!-- B PHASE -->
 
 
 <a-text
@@ -190,19 +203,23 @@ id="bText"
 
 value="B : 0 V"
 
-position="-1.2 1.75 0.02"
+position="-1.2 1.45 0.08"
 
 rotation="-90 0 0"
 
 color="cyan"
 
-scale="0.8 0.8 0.8">
+align="left"
+
+scale="0.7 0.7 0.7">
 
 </a-text>
 
 
 
 </a-marker>
+
+
 
 
 
@@ -220,6 +237,7 @@ type="barcode"
 value="7">
 
 
+
 <a-box
 
 position="0 0.5 0"
@@ -234,7 +252,7 @@ color="yellow">
 
 value="Mukesh Sir"
 
-position="-1 1.5 0"
+position="0 1.3 0"
 
 rotation="-90 0 0"
 
@@ -247,7 +265,9 @@ scale="1 1 1">
 </a-text>
 
 
+
 </a-marker>
+
 
 
 
@@ -265,55 +285,86 @@ scale="1 1 1">
 <script>
 
 
-// Send message to MIT App Inventor
+// Send data to MIT App Inventor
 
 function sendToAppInventor(message)
 
 {
 
-    console.log(message);
+console.log(message);
 
 
-    if(window.AppInventor &&
+if(window.AppInventor &&
 
-       typeof window.AppInventor.setWebViewString === "function")
+typeof window.AppInventor.setWebViewString==="function")
 
-    {
+{
 
-        window.AppInventor.setWebViewString(message);
+window.AppInventor.setWebViewString(message);
 
-    }
+}
 
 }
 
 
 
 
-// Update AR information panel
+
+// Update AR Panel
 
 
 function updateMotorData(r,y,b,status)
 
 {
 
-    document.querySelector("#statusText")
-    .setAttribute("value",
-    "Status : "+status);
+
+document.querySelector("#statusText")
+
+.setAttribute(
+
+"value",
+
+"Status : "+status
+
+);
 
 
-    document.querySelector("#rText")
-    .setAttribute("value",
-    "R : "+r+" V");
+
+document.querySelector("#rText")
+
+.setAttribute(
+
+"value",
+
+"R : "+r+" V"
+
+);
 
 
-    document.querySelector("#yText")
-    .setAttribute("value",
-    "Y : "+y+" V");
+
+document.querySelector("#yText")
+
+.setAttribute(
+
+"value",
+
+"Y : "+y+" V"
+
+);
 
 
-    document.querySelector("#bText")
-    .setAttribute("value",
-    "B : "+b+" V");
+
+document.querySelector("#bText")
+
+.setAttribute(
+
+"value",
+
+"B : "+b+" V"
+
+);
+
+
 
 }
 
@@ -321,7 +372,7 @@ function updateMotorData(r,y,b,status)
 
 
 
-// Default Data
+// Default Values
 
 
 updateMotorData(
@@ -340,35 +391,39 @@ updateMotorData(
 
 
 
-// Receive data from App Inventor
+
+
+// Receive from App Inventor
 
 
 window.updateFromApp=function(data)
 
 {
 
-    let p=data.split(",");
+let value=data.split(",");
 
 
-    if(p.length>=4)
+if(value.length>=4)
 
-    {
+{
 
-        updateMotorData(
+updateMotorData(
 
-        p[0],
+value[0],
 
-        p[1],
+value[1],
 
-        p[2],
+value[2],
 
-        p[3]
+value[3]
 
-        );
+);
 
-    }
+}
+
 
 };
+
 
 
 
@@ -385,9 +440,9 @@ document.querySelector("a-scene")
 
 
 
-const marker6=document.querySelector("#marker6");
+let marker6=document.querySelector("#marker6");
 
-const marker7=document.querySelector("#marker7");
+let marker7=document.querySelector("#marker7");
 
 
 
@@ -399,10 +454,13 @@ marker6.addEventListener(
 function(){
 
 sendToAppInventor(
+
 "Marker 6 Found"
+
 );
 
 });
+
 
 
 
@@ -414,7 +472,9 @@ marker6.addEventListener(
 function(){
 
 sendToAppInventor(
+
 "Marker 6 Lost"
+
 );
 
 });
@@ -430,7 +490,9 @@ marker7.addEventListener(
 function(){
 
 sendToAppInventor(
+
 "Marker 7 Found"
+
 );
 
 });
@@ -446,7 +508,9 @@ marker7.addEventListener(
 function(){
 
 sendToAppInventor(
+
 "Marker 7 Lost"
+
 );
 
 });
