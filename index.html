@@ -1,500 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 <title>AR Motor Monitor</title>
 
-
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.loaders.min.js"></script>
-
-
 <style>
-
 body{
-margin:0;
-overflow:hidden;
+    margin:0;
+    overflow:hidden;
 }
-
 </style>
-
 
 </head>
 
-
 <body>
 
-
 <a-scene
-
-embedded
-
-vr-mode-ui="enabled:false"
-
-renderer="logarithmicDepthBuffer:true"
-
-arjs="
-sourceType:webcam;
-debugUIEnabled:false;
-detectionMode:mono_and_matrix;
-matrixCodeType:3x3;
-">
-
-
-<a-assets>
-
-<a-asset-item
-
-id="motorModel"
-
-src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CesiumMan/glTF-Binary/CesiumMan.glb">
-
-</a-asset-item>
-
-</a-assets>
-
-
-
-
-<!-- ================= MARKER 6 ================= -->
-
-
-<a-marker
-
-id="marker6"
-
-type="barcode"
-
-value="7">
-
-
-
-<!-- 3D MOTOR MODEL (NO ANIMATION) -->
-
-
-<a-entity
-
-gltf-model="#motorModel"
-
-position="0 0 0"
-
-rotation="0 0 0"
-
-scale="1.5 1.5 1.5">
-
-</a-entity>
-
-
-
-
-
-
-
-
-
-<!-- ================= MARKER 7 ================= -->
-
-
-<a-marker
-
-id="marker7"
-
-type="barcode"
-
-value="6">
-
-
-
-<!-- BLACK INFORMATION PANEL -->
-
-
-<a-plane
-
-position="0 1.8 0"
-
-rotation="-90 0 0"
-
-width="3"
-
-height="1.5"
-
-color="black"
-
-opacity="0.75">
-
-</a-plane>
-
-
-
-
-
-<!-- STATUS TEXT -->
-
-
-<a-text
-
-id="statusText"
-
-value="Status : STOP"
-
-position="-1.2 2.35 0.08"
-
-rotation="-90 0 0"
-
-color="lime"
-
-align="left"
-
-scale="0.7 0.7 0.7">
-
-</a-text>
-
-
-
-
-
-<!-- R PHASE -->
-
-
-<a-text
-
-id="rText"
-
-value="R : 0 V"
-
-position="-1.2 2.05 0.08"
-
-rotation="-90 0 0"
-
-color="red"
-
-align="left"
-
-scale="0.7 0.7 0.7">
-
-</a-text>
-
-
-
-
-
-<!-- Y PHASE -->
-
-
-<a-text
-
-id="yText"
-
-value="Y : 0 V"
-
-position="-1.2 1.75 0.08"
-
-rotation="-90 0 0"
-
-color="yellow"
-
-align="left"
-
-scale="0.7 0.7 0.7">
-
-</a-text>
-
-
-
-
-
-<!-- B PHASE -->
-
-
-<a-text
-
-id="bText"
-
-value="B : 0 V"
-
-position="-1.2 1.45 0.08"
-
-rotation="-90 0 0"
-
-color="cyan"
-
-align="left"
-
-scale="0.7 0.7 0.7">
-
-</a-text>
-
-
-
-</a-marker>
-
-
-
-
-
-
-
-<a-entity camera></a-entity>
-
+    embedded
+    vr-mode-ui="enabled:false"
+    renderer="logarithmicDepthBuffer:true"
+    arjs="
+        sourceType:webcam;
+        debugUIEnabled:false;
+        detectionMode:mono_and_matrix;
+        matrixCodeType:3x3;
+    ">
+
+    <!-- ================= MARKER 7 ================= -->
+
+    <a-marker
+        id="marker7"
+        type="barcode"
+        value="6">
+
+        <!-- Background Panel -->
+        <a-plane
+            position="0 1.8 0"
+            rotation="-90 0 0"
+            width="3"
+            height="1.5"
+            color="black"
+            opacity="0.75">
+        </a-plane>
+
+        <!-- Status -->
+        <a-text
+            id="statusText"
+            value="Status : STOP"
+            position="-1.2 2.35 0.08"
+            rotation="-90 0 0"
+            color="lime"
+            align="left"
+            scale="0.7 0.7 0.7">
+        </a-text>
+
+        <!-- R -->
+        <a-text
+            id="rText"
+            value="R : 0 V"
+            position="-1.2 2.05 0.08"
+            rotation="-90 0 0"
+            color="red"
+            align="left"
+            scale="0.7 0.7 0.7">
+        </a-text>
+
+        <!-- Y -->
+        <a-text
+            id="yText"
+            value="Y : 0 V"
+            position="-1.2 1.75 0.08"
+            rotation="-90 0 0"
+            color="yellow"
+            align="left"
+            scale="0.7 0.7 0.7">
+        </a-text>
+
+        <!-- B -->
+        <a-text
+            id="bText"
+            value="B : 0 V"
+            position="-1.2 1.45 0.08"
+            rotation="-90 0 0"
+            color="cyan"
+            align="left"
+            scale="0.7 0.7 0.7">
+        </a-text>
+
+    </a-marker>
+
+    <a-entity camera></a-entity>
 
 </a-scene>
 
-
-
-
-
 <script>
 
-
 // Send data to MIT App Inventor
+function sendToAppInventor(message){
 
-function sendToAppInventor(message)
+    console.log(message);
 
-{
+    if(window.AppInventor &&
+       typeof window.AppInventor.setWebViewString==="function"){
 
-console.log(message);
-
-
-if(window.AppInventor &&
-
-typeof window.AppInventor.setWebViewString==="function")
-
-{
-
-window.AppInventor.setWebViewString(message);
-
+        window.AppInventor.setWebViewString(message);
+    }
 }
-
-}
-
-
-
-
 
 // Update AR Panel
+function updateMotorData(r,y,b,status){
 
+    document.querySelector("#statusText")
+        .setAttribute("value","Status : "+status);
 
-function updateMotorData(r,y,b,status)
+    document.querySelector("#rText")
+        .setAttribute("value","R : "+r+" V");
 
-{
+    document.querySelector("#yText")
+        .setAttribute("value","Y : "+y+" V");
 
-
-document.querySelector("#statusText")
-
-.setAttribute(
-
-"value",
-
-"Status : "+status
-
-);
-
-
-
-document.querySelector("#rText")
-
-.setAttribute(
-
-"value",
-
-"R : "+r+" V"
-
-);
-
-
-
-document.querySelector("#yText")
-
-.setAttribute(
-
-"value",
-
-"Y : "+y+" V"
-
-);
-
-
-
-document.querySelector("#bText")
-
-.setAttribute(
-
-"value",
-
-"B : "+b+" V"
-
-);
-
-
-
+    document.querySelector("#bText")
+        .setAttribute("value","B : "+b+" V");
 }
-
-
-
-
 
 // Default Values
+updateMotorData(415,414,416,"RUNNING");
 
+// Receive data from App Inventor
+window.updateFromApp=function(data){
 
-updateMotorData(
+    let value=data.split(",");
 
-415,
+    if(value.length>=4){
 
-414,
-
-416,
-
-"RUNNING"
-
-);
-
-
-
-
-
-
-
-// Receive from App Inventor
-
-
-window.updateFromApp=function(data)
-
-{
-
-let value=data.split(",");
-
-
-if(value.length>=4)
-
-{
-
-updateMotorData(
-
-value[0],
-
-value[1],
-
-value[2],
-
-value[3]
-
-);
-
-}
-
-
+        updateMotorData(
+            value[0],
+            value[1],
+            value[2],
+            value[3]
+        );
+    }
 };
 
-
-
-
-
-
-
-
 // Marker Detection
+document.querySelector("a-scene").addEventListener("loaded",function(){
 
+    let marker7=document.querySelector("#marker7");
 
-document.querySelector("a-scene")
+    marker7.addEventListener("markerFound",function(){
+        sendToAppInventor("Marker 7 Found");
+    });
 
-.addEventListener("loaded",function(){
-
-
-
-let marker6=document.querySelector("#marker6");
-
-let marker7=document.querySelector("#marker7");
-
-
-
-
-marker6.addEventListener(
-
-"markerFound",
-
-function(){
-
-sendToAppInventor(
-
-"Marker 6 Found"
-
-);
+    marker7.addEventListener("markerLost",function(){
+        sendToAppInventor("Marker 7 Lost");
+    });
 
 });
-
-
-
-
-
-marker6.addEventListener(
-
-"markerLost",
-
-function(){
-
-sendToAppInventor(
-
-"Marker 6 Lost"
-
-);
-
-});
-
-
-
-
-
-marker7.addEventListener(
-
-"markerFound",
-
-function(){
-
-sendToAppInventor(
-
-"Marker 7 Found"
-
-);
-
-});
-
-
-
-
-
-marker7.addEventListener(
-
-"markerLost",
-
-function(){
-
-sendToAppInventor(
-
-"Marker 7 Lost"
-
-);
-
-});
-
-
-
-});
-
-
 
 </script>
 
-
-
 </body>
-
 </html>
