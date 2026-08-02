@@ -1,99 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AR Motor Monitor</title>
+<!doctype HTML>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    </head>
+    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    
+    <body style='margin : 0px; overflow: hidden;'>
+        <!-- we add detectionMode and matrixCodeType to tell AR.js to recognize barcode markers -->
+        <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
 
-<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+        <a-assets>
+            <a-asset-item id="animated-asset" src="https://raw.githubusercontent.com/nicolocarpignoli/nicolocarpignoli.github.io/master/ar-playground/models/CesiumMan.gltf"></a-asset-item>
+        </a-assets>
 
-<style>
-body{
-    margin:0;
-    overflow:hidden;
-}
-</style>
-</head>
+        <a-marker type='barcode' value='7'>
+            <a-box position='0 0.5 0' color="yellow"></a-box>
+        </a-marker>
 
-<body>
+        <a-marker id="animated-marker" type='barcode' value='6'>
+            <a-entity
+                gltf-model="#animated-asset"
+                scale="2">
+            </a-entity>
+        </a-marker>
 
-<a-scene
-embedded
-vr-mode-ui="enabled:false"
-renderer="logarithmicDepthBuffer:true"
-arjs="sourceType:webcam;debugUIEnabled:false;">
-
-<a-marker preset="hiro">
-
-<a-plane
-position="0 1.8 0"
-rotation="-90 0 0"
-width="3"
-height="1.5"
-color="black"
-opacity="0.75">
-</a-plane>
-
-<a-text
-id="statusText"
-value="Status : RUNNING"
-position="-1.2 2.35 0.05"
-rotation="-90 0 0"
-color="lime"
-scale="0.7 0.7 0.7">
-</a-text>
-
-<a-text
-id="rText"
-value="R : 415 V"
-position="-1.2 2.05 0.05"
-rotation="-90 0 0"
-color="red"
-scale="0.7 0.7 0.7">
-</a-text>
-
-<a-text
-id="yText"
-value="Y : 414 V"
-position="-1.2 1.75 0.05"
-rotation="-90 0 0"
-color="yellow"
-scale="0.7 0.7 0.7">
-</a-text>
-
-<a-text
-id="bText"
-value="B : 416 V"
-position="-1.2 1.45 0.05"
-rotation="-90 0 0"
-color="cyan"
-scale="0.7 0.7 0.7">
-</a-text>
-
-</a-marker>
-
-<a-entity camera></a-entity>
-
-</a-scene>
-
-<script>
-function updateMotorData(r,y,b,status){
-    document.getElementById("statusText").setAttribute("value","Status : "+status);
-    document.getElementById("rText").setAttribute("value","R : "+r+" V");
-    document.getElementById("yText").setAttribute("value","Y : "+y+" V");
-    document.getElementById("bText").setAttribute("value","B : "+b+" V");
-}
-
-window.updateFromApp=function(data){
-    let v=data.split(",");
-    if(v.length>=4){
-        updateMotorData(v[0],v[1],v[2],v[3]);
-    }
-};
-
-updateMotorData(415,414,416,"RUNNING");
-</script>
-
-</body>
+        <!-- use this <a-entity camera> to support multiple-markers, otherwise use <a-marker-camera> instead of </a-marker> -->
+        <a-entity camera></a-entity>
+        </a-scene>
+    </body>
 </html>
