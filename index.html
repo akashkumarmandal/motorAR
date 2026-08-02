@@ -35,7 +35,7 @@ body{
     <!-- ================= MARKER 7 ================= -->
 
     <a-marker
-        id="marker7"
+        id="marker6"
         type="barcode"
         value="6">
 
@@ -151,14 +151,14 @@ window.updateFromApp=function(data){
 // Marker Detection
 document.querySelector("a-scene").addEventListener("loaded",function(){
 
-    let marker7=document.querySelector("#marker7");
+    let marker7=document.querySelector("#marker6");
 
     marker7.addEventListener("markerFound",function(){
-        sendToAppInventor("Marker 7 Found");
+        sendToAppInventor("Marker 6 Found");
     });
 
     marker7.addEventListener("markerLost",function(){
-        sendToAppInventor("Marker 7 Lost");
+        sendToAppInventor("Marker 6 Lost");
     });
 
 });
