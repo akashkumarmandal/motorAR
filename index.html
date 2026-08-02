@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AR Motor Monitor</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
@@ -16,153 +14,85 @@ body{
     overflow:hidden;
 }
 </style>
-
 </head>
 
 <body>
 
 <a-scene
-    embedded
-    vr-mode-ui="enabled:false"
-    renderer="logarithmicDepthBuffer:true"
-    arjs="
-        sourceType:webcam;
-        debugUIEnabled:false;
-        detectionMode:mono_and_matrix;
-        matrixCodeType:3x3;
-    ">
+embedded
+vr-mode-ui="enabled:false"
+renderer="logarithmicDepthBuffer:true"
+arjs="sourceType:webcam;debugUIEnabled:false;">
 
-    <!-- ================= MARKER 7 ================= -->
+<a-marker preset="hiro">
 
-    <a-marker
-        id="marker6"
-        type="barcode"
-        value="6">
+<a-plane
+position="0 1.8 0"
+rotation="-90 0 0"
+width="3"
+height="1.5"
+color="black"
+opacity="0.75">
+</a-plane>
 
-        <!-- Background Panel -->
-        <a-plane
-            position="0 1.8 0"
-            rotation="-90 0 0"
-            width="3"
-            height="1.5"
-            color="black"
-            opacity="0.75">
-        </a-plane>
+<a-text
+id="statusText"
+value="Status : RUNNING"
+position="-1.2 2.35 0.05"
+rotation="-90 0 0"
+color="lime"
+scale="0.7 0.7 0.7">
+</a-text>
 
-        <!-- Status -->
-        <a-text
-            id="statusText"
-            value="Status : STOP"
-            position="-1.2 2.35 0.08"
-            rotation="-90 0 0"
-            color="lime"
-            align="left"
-            scale="0.7 0.7 0.7">
-        </a-text>
+<a-text
+id="rText"
+value="R : 415 V"
+position="-1.2 2.05 0.05"
+rotation="-90 0 0"
+color="red"
+scale="0.7 0.7 0.7">
+</a-text>
 
-        <!-- R -->
-        <a-text
-            id="rText"
-            value="R : 0 V"
-            position="-1.2 2.05 0.08"
-            rotation="-90 0 0"
-            color="red"
-            align="left"
-            scale="0.7 0.7 0.7">
-        </a-text>
+<a-text
+id="yText"
+value="Y : 414 V"
+position="-1.2 1.75 0.05"
+rotation="-90 0 0"
+color="yellow"
+scale="0.7 0.7 0.7">
+</a-text>
 
-        <!-- Y -->
-        <a-text
-            id="yText"
-            value="Y : 0 V"
-            position="-1.2 1.75 0.08"
-            rotation="-90 0 0"
-            color="yellow"
-            align="left"
-            scale="0.7 0.7 0.7">
-        </a-text>
+<a-text
+id="bText"
+value="B : 416 V"
+position="-1.2 1.45 0.05"
+rotation="-90 0 0"
+color="cyan"
+scale="0.7 0.7 0.7">
+</a-text>
 
-        <!-- B -->
-        <a-text
-            id="bText"
-            value="B : 0 V"
-            position="-1.2 1.45 0.08"
-            rotation="-90 0 0"
-            color="cyan"
-            align="left"
-            scale="0.7 0.7 0.7">
-        </a-text>
+</a-marker>
 
-    </a-marker>
-
-    <a-entity camera></a-entity>
+<a-entity camera></a-entity>
 
 </a-scene>
 
 <script>
-
-// Send data to MIT App Inventor
-function sendToAppInventor(message){
-
-    console.log(message);
-
-    if(window.AppInventor &&
-       typeof window.AppInventor.setWebViewString==="function"){
-
-        window.AppInventor.setWebViewString(message);
-    }
-}
-
-// Update AR Panel
 function updateMotorData(r,y,b,status){
-
-    document.querySelector("#statusText")
-        .setAttribute("value","Status : "+status);
-
-    document.querySelector("#rText")
-        .setAttribute("value","R : "+r+" V");
-
-    document.querySelector("#yText")
-        .setAttribute("value","Y : "+y+" V");
-
-    document.querySelector("#bText")
-        .setAttribute("value","B : "+b+" V");
+    document.getElementById("statusText").setAttribute("value","Status : "+status);
+    document.getElementById("rText").setAttribute("value","R : "+r+" V");
+    document.getElementById("yText").setAttribute("value","Y : "+y+" V");
+    document.getElementById("bText").setAttribute("value","B : "+b+" V");
 }
 
-// Default Values
-updateMotorData(415,414,416,"RUNNING");
-
-// Receive data from App Inventor
 window.updateFromApp=function(data){
-
-    let value=data.split(",");
-
-    if(value.length>=4){
-
-        updateMotorData(
-            value[0],
-            value[1],
-            value[2],
-            value[3]
-        );
+    let v=data.split(",");
+    if(v.length>=4){
+        updateMotorData(v[0],v[1],v[2],v[3]);
     }
 };
 
-// Marker Detection
-document.querySelector("a-scene").addEventListener("loaded",function(){
-
-    let marker7=document.querySelector("#marker6");
-
-    marker7.addEventListener("markerFound",function(){
-        sendToAppInventor("Marker 6 Found");
-    });
-
-    marker7.addEventListener("markerLost",function(){
-        sendToAppInventor("Marker 6 Lost");
-    });
-
-});
-
+updateMotorData(415,414,416,"RUNNING");
 </script>
 
 </body>
