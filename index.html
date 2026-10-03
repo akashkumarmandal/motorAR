@@ -1,105 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             user-scalable=no">
 
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+  <title>Camera Test</title>
 
-<title>Motor AR</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      overflow: hidden;
+    }
 
-<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-<script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.8/aframe/build/aframe-ar.js"></script>
-
-<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-
-<style>
-
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: black;
-}
-
-</style>
-
+    #status {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      padding: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-family: Arial;
+      z-index: 10;
+    }
+  </style>
 </head>
 
 <body>
 
-<a-scene
-    embedded
-    vr-mode-ui="enabled: false"
+<div id="status">
+  Requesting camera...
+</div>
 
-    renderer="
-        antialias: true;
-        alpha: true;
-        logarithmicDepthBuffer: true;
-    "
+<video id="camera" autoplay playsinline></video>
 
-    arjs="
-        sourceType: webcam;
-        debugUIEnabled: false;
-        detectionMode: mono_and_matrix;
-        matrixCodeType: 3x3;
-    "
->
+<script>
 
-<a-assets>
+const video = document.getElementById("camera");
+const status = document.getElementById("status");
 
-    <a-asset-item
-        id="cesiumMan"
-        src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CesiumMan/glTF-Binary/CesiumMan.glb">
-    </a-asset-item>
+async function startCamera() {
 
-</a-assets>
+  try {
 
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
 
-<!-- BARCODE 7 -->
+      status.innerHTML =
+        "ERROR: getUserMedia is not available";
 
-<a-marker
-    type="barcode"
-    value="7">
+      return;
+    }
 
-    <a-box
-        position="0 0.5 0"
-        width="1"
-        height="1"
-        depth="1"
-        color="yellow">
-    </a-box>
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
 
-</a-marker>
+        video: {
+          facingMode: {
+            ideal: "environment"
+          }
+        },
 
+        audio: false
 
-<!-- BARCODE 6 -->
+      });
 
-<a-marker
-    type="barcode"
-    value="6">
+    video.srcObject = stream;
 
-    <a-entity
-        gltf-model="#cesiumMan"
-        animation-mixer
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5">
-    </a-entity>
+    status.innerHTML = "CAMERA WORKING";
 
-</a-marker>
+  }
 
+  catch (error) {
 
-<a-entity camera></a-entity>
+    status.innerHTML =
+      "CAMERA ERROR: " + error.name +
+      "<br>" + error.message;
 
-</a-scene>
+    console.error(error);
+
+  }
+
+}
+
+startCamera();
+
+</script>
 
 </body>
 </html>
