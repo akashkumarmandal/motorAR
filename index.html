@@ -10,7 +10,7 @@
         maximum-scale=1.0,
         user-scalable=no">
 
-  <title>AR.js - Akash</title>
+  <title>AR.js - Akash Weather</title>
 
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
@@ -37,21 +37,31 @@
         type="barcode"
         value="7">
 
-        <!-- Plane -->
+        <!-- White vertical plane -->
         <a-plane
             position="0 0.8 0"
-            rotation="-90 0 0"
+            rotation="0 0 0"
             width="2"
-            height="1"
+            height="1.4"
             color="white">
 
-            <!-- Text -->
+            <!-- Name -->
             <a-text
                 value="Akash"
                 align="center"
                 color="blue"
                 width="4"
-                position="0 0 0.01">
+                position="0 0.25 0.01">
+            </a-text>
+
+            <!-- Temperature -->
+            <a-text
+                id="temperature"
+                value="Loading..."
+                align="center"
+                color="red"
+                width="3"
+                position="0 -0.25 0.01">
             </a-text>
 
         </a-plane>
@@ -62,6 +72,75 @@
     <a-entity camera></a-entity>
 
 </a-scene>
+
+
+<script>
+
+    // Raipur, Chhattisgarh coordinates
+    const latitude = 21.2514;
+    const longitude = 81.6296;
+
+    // Get current temperature
+    async function getTemperature() {
+
+        try {
+
+            const url =
+                `https://api.open-meteo.com/v1/forecast` +
+                `?latitude=${latitude}` +
+                `&longitude=${longitude}` +
+                `&current=temperature_2m` +
+                `&temperature_unit=celsius`;
+
+            const response = await fetch(url);
+
+            const data = await response.json();
+
+            const temperature =
+                data.current.temperature_2m;
+
+            // Update AR text
+            document
+                .getElementById("temperature")
+                .setAttribute(
+                    "value",
+                    `🌡 ${temperature} °C`
+                );
+
+            console.log(
+                "Current temperature:",
+                temperature,
+                "°C"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Weather API error:",
+                error
+            );
+
+            document
+                .getElementById("temperature")
+                .setAttribute(
+                    "value",
+                    "Temperature unavailable"
+                );
+        }
+    }
+
+
+    // Get temperature immediately
+    getTemperature();
+
+
+    // Refresh every 5 minutes
+    setInterval(
+        getTemperature,
+        5 * 60 * 1000
+    );
+
+</script>
 
 </body>
 </html>
